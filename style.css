@@ -1,0 +1,167 @@
+@keyframes shaking {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes drop-piece {
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x), calc(var(--y) + 64px));
+    opacity: 0;
+  }
+}
+
+@keyframes drop-tile {
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 64px);
+    opacity: 0;
+  }
+}
+
+body {
+  color: white;
+  background-color: #111;
+  display: flex;
+  min-height: 100dvh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: system-ui;
+}
+
+.board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(8, 64px);
+  grid-template-rows: repeat(8, 64px);
+}
+
+.tile {
+  box-shadow: 0 5px #2d2d2d;
+  z-index: 5;
+}
+
+.tile[data-color="white"] {
+  background-color: #888;
+}
+
+.tile[data-color="black"] {
+  background-color: #444;
+}
+
+[data-drop-state="shaking"] {
+  animation: 300ms infinite shaking;
+}
+
+[data-drop-state="dropped"] {
+  animation: forwards drop-tile 200ms;
+}
+
+.tile[data-selected="true"] {
+  box-shadow: inset 0 0 0 4px white;
+}
+
+.tile[data-move="push"] {
+  box-shadow: inset 0 0 0 64px #ee00004f;
+}
+
+.tile[data-move="move"] {
+  box-shadow: inset 0 0 0 64px #0000ee4f;
+}
+
+.piece {
+  --x: calc(var(--col) * 64px);
+  --y: calc(var(--row) * 64px);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  font-size: 30pt;
+  width: 64px;
+  height: 64px;
+  transform: translate(var(--x), var(--y));
+  transition: transform 200ms;
+  pointer-events: none;
+}
+
+.piece:hover, /* TODO: Get this working again */
+    .piece[data-selected="true"] {
+  transform: translate(var(--x), calc(var(--y) - 5px)) rotate(5deg);
+}
+
+.piece[data-color="white"] {
+  color: white;
+}
+
+.piece[data-color="black"] {
+  color: black;
+}
+
+.piece:not([data-active]) {
+  animation: 400ms forwards drop-piece;
+
+  /* Wait for the movement transition to finish before dropping */
+  animation-delay: 300ms;
+
+  /** Dropping pieces need to render behind tiles */
+  z-index: 0;
+
+  /* Dropping pieces are gray so that you can see black pieces */
+  color: #666;
+}
+
+[data-type="king"]::before {
+  content: "♚";
+}
+
+[data-type="queen"]::before {
+  content: "♛";
+}
+
+[data-type="bishop"]::before {
+  content: "♝";
+}
+
+[data-type="knight"]::before {
+  content: "♞";
+}
+
+[data-type="rook"]::before {
+  content: "♜";
+}
+
+[data-type="pawn"]::before {
+  content: "♟";
+}
+
+.info {
+  max-width: 400px;
+  padding: 1em;
+}
+
+h1 {
+  text-align: center;
+  font-size: 16pt;
+}
