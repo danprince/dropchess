@@ -13,7 +13,9 @@
     @keydown.escape="selectPiece()"
     @keydown.n="init()"
   >
-    <h1>Dropchess</h1>
+    <a href="https://github.com/danprince/dropchess" target="_blank">
+      <h1>Dropchess</h1>
+    </a>
     <div class="board">
       <template x-for="square in getSquares()">
         <div
@@ -40,12 +42,6 @@
       </template>
     </div>
     <div class="info">
-      <p x-cloak x-show="game.winner">
-        <strong x-text="game.winner"></strong> wins!
-      </p>
-      <p>
-        <button @click="init()">New game</button>
-      </p>
       <p>
         When a <em>non-pawn</em> piece moves, the tile they land on will shake.
         If a piece moves off of a shaking tile, then the tile will drop out of
@@ -59,6 +55,12 @@
       <p>
         There's no check, no castling, and no en passant. You win by pushing the
         opponent's king off of the board.
+      </p>
+      <p>
+        <button @click="init()">New game</button>
+      </p>
+      <p x-cloak x-show="game.winner">
+        <strong x-text="game.winner"></strong> wins!
       </p>
     </div>
   </body>
