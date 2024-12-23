@@ -40,6 +40,12 @@
       </template>
     </div>
     <div class="info">
+      <p x-cloak x-show="game.winner">
+        <strong x-text="game.winner"></strong> wins!
+      </p>
+      <p>
+        <button @click="init()">New game</button>
+      </p>
       <p>
         When a <em>non-pawn</em> piece moves, the tile they land on will shake.
         If a piece moves off of a shaking tile, then the tile will drop out of

@@ -166,8 +166,9 @@ body {
 }
 
 .info {
-  max-width: 400px;
   padding: 1em;
+  width: 100%;
+  max-width: 512px;
 }
 
 h1 {

@@ -47,16 +47,6 @@ class SingleplayerApp {
       this.game.play(this.selectedPiece, move);
       this.selectPiece(undefined);
     }
-
-    // Wait for animations to finish before checking for the winner
-    setTimeout(() => this.checkWin(), 400);
-  }
-
-  checkWin() {
-    if (this.game.winner) {
-      alert(`${this.game.winner} wins!`);
-      this.init();
-    }
   }
 
   /**

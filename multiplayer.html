@@ -42,10 +42,6 @@
       </template>
     </div>
     <div class="info">
-      <p x-cloak x-show="winner">
-        🎉 <strong x-text="winner"></strong> wins. Press <kbd>n</kbd> to start a
-        new game.
-      </p>
       <template x-for="name in players">
         <span
           class="username"
@@ -71,6 +67,14 @@
           <span x-text="name"></span>
         </span>
       </template>
+
+      <p x-cloak x-show="game.winner">
+        <strong x-text="game.winner"></strong> wins!
+      </p>
+
+      <p>
+        <button @click="newGame()">New game</button>
+      </p>
 
       <p>
         When a <em>non-pawn</em> piece moves, the tile they land on will shake.
