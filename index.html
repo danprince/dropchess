@@ -8,7 +8,7 @@
     <title>Dropchess</title>
   </head>
 
-  <body x-data="new App()" @keydown.escape="selectPiece()">
+  <body x-data="new SingleplayerApp()" @keydown.escape="selectPiece()">
     <h1>Dropchess</h1>
     <div class="board">
       <template x-for="square in getSquares()">
@@ -48,6 +48,6 @@
       <p>There is no check, castling, or en-passant.</p>
     </div>
   </body>
-  <script type="module" src="app.js" defer></script>
+  <script type="module" src="singleplayer.js" defer></script>
   <script src="https://unpkg.com/alpinejs" defer></script>
 </html>

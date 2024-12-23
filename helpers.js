@@ -11,10 +11,10 @@ import {
   shaking,
   stable,
   white,
-} from "./chess.js";
+} from "./game.js";
 
 /**
- * @import { Color, Point, Piece, PieceType, Tile, TileType, Move } from "./chess.js";
+ * @import { Color, Point, Piece, PieceType, Tile, TileType, Move } from "./game.js";
  */
 
 /**

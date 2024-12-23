@@ -1,7 +1,7 @@
-import { Game, white, black } from "./chess.js";
+import { Game, white, black } from "./game.js";
 
 /**
- * @import { Tile, Piece, Color, Move } from "./chess.js";
+ * @import { Tile, Piece, Color, Move } from "./game.js";
  *
  * @typedef {object} Square
  * @prop {Tile} tile
@@ -15,7 +15,7 @@ import { Game, white, black } from "./chess.js";
  * @prop {Color} turn
  */
 
-class App {
+class SingleplayerApp {
   /**
    * @type {Game}
    */
@@ -60,6 +60,8 @@ class App {
   }
 
   /**
+   * Squares are just a useful abstraction which makes it easier for Alpine to
+   * render tiles.
    * @returns {Square[]}
    */
   getSquares() {
@@ -84,4 +86,4 @@ class App {
   }
 }
 
-Object.assign(window, { App });
+Object.assign(window, { SingleplayerApp });

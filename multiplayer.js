@@ -1,6 +1,6 @@
 // @ts-ignore
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { black, Game, king, white } from "./chess.js";
+import { black, Game, king, white } from "./game.js";
 
 import {
   getFirestore,
@@ -14,7 +14,7 @@ import {
 
 /**
  * @import { DocumentReference } from "@firebase/firestore";
- * @import { Piece, Tile, Move, Color } from "./chess.js";
+ * @import { Piece, Tile, Move, Color } from "./game.js";
  */
 
 /**

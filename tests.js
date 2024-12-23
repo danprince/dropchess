@@ -1,4 +1,4 @@
-import { black, white } from "./chess.js";
+import { black, white } from "./game.js";
 import { test, expectMoves, expectState, expectWinner } from "./helpers.js";
 
 /**

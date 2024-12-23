@@ -16,7 +16,6 @@
  * @typedef {King | Queen | Bishop | Knight | Rook | Pawn} PieceType
  *
  * @typedef {typeof move | typeof push} MoveType
- *
  * @typedef {typeof stable | typeof shaking | typeof dropped} TileType
  *
  * @typedef {object} Tile
@@ -29,14 +28,6 @@
  * @prop {number} x
  * @prop {number} y
  *
- * @typedef {object} Square
- * @prop {Tile} tile
- * @prop {Color} color
- * @prop {Piece | undefined} [piece]
- * @prop {Move | undefined} [move]
- */
-
-/**
  * @typedef {object} Piece
  * @prop {number} id
  * @prop {PieceType} type
@@ -78,11 +69,6 @@ export class Game {
   columns = columns;
 
   /**
-   * @type {Color}
-   */
-  turn = white;
-
-  /**
    * @type {Color | undefined}
    */
   winner;
@@ -97,7 +83,7 @@ export class Game {
    */
   pieces;
 
-  constructor({ tiles = createTiles(), pieces = createStartingPieces() } = {}) {
+  constructor({ tiles = createStartingTiles(), pieces = createStartingPieces() } = {}) {
     this.tiles = tiles;
     this.pieces = pieces;
   }
@@ -158,9 +144,7 @@ export class Game {
   isBlocked(point) {
     let tile = this.getTile(point);
     let piece = this.getPiece(point);
-    return (
-      tile === undefined || tile.type === dropped || piece !== undefined
-    );
+    return tile === undefined || tile.type === dropped || piece !== undefined;
   }
 
   /**
@@ -185,8 +169,8 @@ export class Game {
     let startTile = this.getTileOrThrow(piece);
     let endTile = this.getTile(point);
 
-    // If the tile is shaking, then drop it, unless the piece was pushed off
-    // the tile.
+    // Shaking tiles drop when the piece leaves them, unless the piece was
+    // pushed off of the tile.
     if (startTile.type === shaking && !pushed) {
       startTile.type = dropped;
     }
@@ -194,12 +178,14 @@ export class Game {
     piece.x = point.x;
     piece.y = point.y;
 
+    // Pieces moving off the board or onto a dropped tile will drop.
     if (endTile === undefined || endTile.type === dropped) {
-      this.removePiece(piece);
+      this.dropPiece(piece);
       return;
     }
 
-    // Pawns can't drop tiles
+    // Moving onto a stable tile will make it shake, unless the piece was a
+    // pawn.
     if (endTile.type === stable && piece.type !== pawn) {
       endTile.type = shaking;
     }
@@ -218,7 +204,7 @@ export class Game {
   /**
    * @param {Piece} piece
    */
-  removePiece(piece) {
+  dropPiece(piece) {
     piece.active = false;
 
     if (piece.type === king) {
@@ -291,14 +277,48 @@ function shake(array) {
 }
 
 /**
- * @param {Array<[Color, PieceType] | undefined>} template
- * @returns {Piece[]}
+ * @returns {Tile[]}
  */
-function createPieces(template) {
+function createStartingTiles() {
+  /**
+   * @type {Tile[]}
+   */
+  let tiles = [];
+
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < columns; x++) {
+      tiles.push({ x, y, type: stable });
+    }
+  }
+
+  return tiles;
+}
+
+function createStartingPieces() {
+  const b = black;
+  const w = white;
+
+  // prettier-ignore
+  /**
+   * @type {Array<[Color, PieceType] | undefined>}
+   */
+  const template = [
+    [b, rook], [b, knight], [b, bishop], [b, queen], [b, king], [b, bishop], [b, knight], [b, rook],
+    [b, pawn], [b, pawn]  , [b, pawn]  , [b, pawn] , [b, pawn], [b, pawn]  , [b, pawn]  , [b, pawn],
+             ,            ,            ,           ,          ,            ,            ,          ,
+             ,            ,            ,           ,          ,            ,            ,          ,
+             ,            ,            ,           ,          ,            ,            ,          ,
+             ,            ,            ,           ,          ,            ,            ,          ,
+    [w, pawn], [w, pawn]  , [w, pawn]  , [w, pawn] , [w, pawn], [w, pawn]  , [w, pawn]  , [w, pawn],
+    [w, rook], [w, knight], [w, bishop], [w, queen], [w, king], [w, bishop], [w, knight], [w, rook],
+  ];
+
+  // Sanity check the template dimensions.
   assert(
     template.length === columns * rows,
     `Template size was not ${columns}x${rows}`,
   );
+
   /**
    * @type {Piece[]}
    */
@@ -317,66 +337,6 @@ function createPieces(template) {
   }
 
   return pieces;
-}
-
-/**
- * @returns {Tile[]}
- */
-function createTiles() {
-  /**
-   * @type {Tile[]}
-   */
-  let tiles = [];
-
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < columns; x++) {
-      tiles.push({ x, y, type: stable });
-    }
-  }
-
-  return tiles;
-}
-
-function createStartingPieces() {
-  // prettier-ignore
-  return createPieces([
-    [black, rook],
-    [black, knight],
-    [black, bishop],
-    [black, queen],
-    [black, king],
-    [black, bishop],
-    [black, knight],
-    [black, rook],
-    [black, pawn],
-    [black, pawn],
-    [black, pawn],
-    [black, pawn],
-    [black, pawn],
-    [black, pawn],
-    [black, pawn],
-    [black, pawn],
-    , , , , , , , ,
-    , , , , , , , ,
-    , , , , , , , ,
-    , , , , , , , ,
-    [white, pawn],
-    [white, pawn],
-    [white, pawn],
-    [white, pawn],
-    [white, pawn],
-    [white, pawn],
-    [white, pawn],
-    [white, pawn],
-    [white, rook],
-    [white, knight],
-    [white, bishop],
-    [white, queen],
-    [white, king],
-    [white, bishop],
-    [white, knight],
-    [white, rook],
-  ]);
 }
 
 /**
