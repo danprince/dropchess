@@ -26,13 +26,11 @@ jobs:
         run: pnpm tsc
       - name: Test
         run: pnpm test
+      - name: Build
+        run: mkdir dist && cp *.css *.js *.html *.png dist
       - name: Upload
         uses: actions/upload-pages-artifact@v3
         with:
-          path: |
-            *.css
-            *.js
-            *.html
-            *.png
+          path: dist
       - name: Deploy
         uses: actions/deploy-pages@v4
