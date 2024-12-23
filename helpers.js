@@ -220,9 +220,7 @@ Either:
       );
     }
 
-    this.game = new Game();
-    this.game.pieces = pieces;
-    this.game.tiles = tiles;
+    this.game = new Game({ pieces, tiles });
     this.selectedPiece = selectedPiece;
   }
 

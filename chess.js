@@ -89,17 +89,23 @@ export class Game {
   /**
    * @type {Tile[]}
    */
-  tiles = createTiles();
+  tiles;
 
   /**
    * @type {Piece[]}
    */
-  pieces = createStartingPieces();
+  pieces;
 
   /**
    * @type {Piece[]}
    */
-  activePieces = [...this.pieces];
+  activePieces;
+
+  constructor({ tiles = createTiles(), pieces = createStartingPieces() } = {}) {
+    this.tiles = tiles;
+    this.pieces = pieces;
+    this.activePieces = [...pieces];
+  }
 
   /**
    * @param {Point} point
