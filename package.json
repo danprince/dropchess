@@ -1,6 +1,7 @@
 {
   "type": "module",
   "private": true,
+  "packageManager": "pnpm@8.15.5",
   "scripts": {
     "test": "node tests.js"
   },

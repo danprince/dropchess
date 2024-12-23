@@ -9,4 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-      - run: npm test
+      - uses: pnpm/action-setup@v4
+      - run: pnpm tsc
+      - run: pnpm test
