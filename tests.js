@@ -1,6 +1,32 @@
 import { black, white } from "./chess.js";
 import { test, expectMoves, expectState, expectWinner } from "./helpers.js";
 
+/**
+ * Each scenario describes the state of dropchess board. There must be a
+ * "selected" piece and there can optionally be a target.
+ *
+ * The selected piece is determined as follows:
+ * - If there's only one piece on the board, then it is selected.
+ * - If there's only one _white_ piece on the board, then it is selected.
+ * - Otherwise, the piece with a caret above (♟̌) is selected.
+ *
+ * The target is determined as follows:
+ * - If there is an `x` that tile is the target.
+ * - If there is a piece with an x above (♟̽) then it is the target.
+ * - Otherwise there is no target.
+ *
+ * Each character in the scenario has a corresponding tile and the state
+ * of the tile is determined as follows.
+ * - If the tile is a ` ` then it is a dropped tile.
+ * - If the tile is any other character then it is a stable tile.
+ * - If the tile has a tilde below (.̰) then it is shaking.
+ *
+ * Here are the modifier characters in a form that's easy to copy.
+ * - ` ̌` Selected
+ * - ` ̽` Targeted
+ * - ` ̰` Shaking
+ */
+
 test("pawns can only double move from their starting row", () => {
   expectMoves(`
 ........
