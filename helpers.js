@@ -181,7 +181,12 @@ export class Scenario {
           continue;
         }
 
-        let piece = charToPieceTable[char]({ id: nextPieceId++, x, y });
+        let piece = charToPieceTable[char]({
+          id: nextPieceId++,
+          x,
+          y,
+          active: true,
+        });
         pieces.push(piece);
 
         if (isSelected && selectedPiece) {

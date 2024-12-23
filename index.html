@@ -28,7 +28,7 @@
           class="piece"
           :data-color="piece.color"
           :data-type="piece.type"
-          :data-active="game.activePieces.includes(piece)"
+          :data-active="piece.active"
           :data-selected="piece === selectedPiece"
           :style="{ '--col': piece.x, '--row': piece.y }"
         ></div>

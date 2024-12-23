@@ -41,6 +41,7 @@
  * @prop {number} id
  * @prop {PieceType} type
  * @prop {Color} color
+ * @prop {boolean} active
  * @prop {number} x
  * @prop {number} y
  */
@@ -96,15 +97,9 @@ export class Game {
    */
   pieces;
 
-  /**
-   * @type {Piece[]}
-   */
-  activePieces;
-
   constructor({ tiles = createTiles(), pieces = createStartingPieces() } = {}) {
     this.tiles = tiles;
     this.pieces = pieces;
-    this.activePieces = [...pieces];
   }
 
   /**
@@ -132,8 +127,8 @@ export class Game {
    * @returns {Piece | undefined}
    */
   getPiece(point) {
-    return this.activePieces.find(
-      (piece) => piece.x === point.x && piece.y === point.y,
+    return this.pieces.find(
+      (piece) => piece.active && piece.x === point.x && piece.y === point.y,
     );
   }
 
@@ -224,9 +219,7 @@ export class Game {
    * @param {Piece} piece
    */
   removePiece(piece) {
-    let index = this.activePieces.indexOf(piece);
-    assert(index >= 0, `Trying to remove a piece that is not in the game!`);
-    this.activePieces.splice(index, 1);
+    piece.active = false;
 
     if (piece.type === king) {
       this.winner = piece.color === black ? white : black;
@@ -318,7 +311,7 @@ function createPieces(template) {
       if (cell) {
         let [color, type] = cell;
         let id = pieces.length;
-        pieces.push({ id, x, y, type, color });
+        pieces.push({ id, x, y, type, color, active: true });
       }
     }
   }
