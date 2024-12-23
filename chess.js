@@ -190,7 +190,9 @@ export class Game {
     let startTile = this.getTileOrThrow(piece);
     let endTile = this.getTile(point);
 
-    if (startTile.dropState === shaking) {
+    // If the tile is shaking, then drop it, unless the piece was pushed off
+    // the tile.
+    if (startTile.dropState === shaking && !pushed) {
       startTile.dropState = dropped;
     }
 
