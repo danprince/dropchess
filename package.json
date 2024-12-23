@@ -3,10 +3,12 @@
   "private": true,
   "packageManager": "pnpm@8.15.5",
   "scripts": {
-    "test": "node tests.js"
+    "test": "node tests.js",
+    "dev": "live-server"
   },
   "devDependencies": {
     "@firebase/firestore": "^4.7.5",
+    "live-server": "^1.2.2",
     "typescript": "^5.7.2"
   }
 }
