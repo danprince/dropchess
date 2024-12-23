@@ -60,7 +60,7 @@ class MultiplayerApp {
 
   /**
    * The username of the current player
-   * @type {string | undefined}
+   * @type {string}
    */
   username;
 
@@ -82,6 +82,11 @@ class MultiplayerApp {
    * @type {string | null}
    */
   activeUser = null;
+
+  constructor() {
+    let username = localStorage.username || prompt("Pick a username") || "anon";
+    this.username = localStorage.username = username;
+  }
 
   /**
    * Select a piece.
@@ -149,6 +154,8 @@ class MultiplayerApp {
   }
 
   async init() {
+    this.players.push(this.username);
+
     // Listen for changes to the room doc
     onSnapshot(roomDoc, (snapshot) => {
       let data = snapshot.data();
@@ -160,28 +167,12 @@ class MultiplayerApp {
         this.game.pieces = data.pieces;
         this.selectedPieceId = data.selectedPieceId;
         this.activeUser = data.activeUser;
-        this.registerUsername();
       } else {
         this.newGame();
       }
     });
-  }
 
-  async registerUsername() {
-    // Bail if we already have a username
-    if (this.username) return;
-
-    let username = localStorage.username || prompt("Pick a username") || "anon";
-
-    while (this.players.includes(username)) {
-      let name = prompt(
-        `There's already a "${username}" here. Pick another name:`,
-      );
-      username = name || username;
-    }
-
-    this.username = localStorage.username = username;
-
+    // Register the player
     await updateDoc(roomDoc, {
       players: arrayUnion(this.username),
     });
