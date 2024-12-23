@@ -1,0 +1,39 @@
+name: Deploy
+
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+      - name: Pnpm install
+        run: pnpm install
+      - name: Typecheck
+        run: pnpm tsc
+      - name: Test
+        run: pnpm test
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages
+          path: |
+            *.css
+            *.js
+            *.html
+            *.png
+      - name: Deploy
+        uses: actions/deploy-pages@v4
