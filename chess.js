@@ -204,8 +204,8 @@ export class Game {
       return;
     }
 
-    // Pawns can't knock tiles out and neither can pieces that were pushed
-    if (endTile.dropState === stable && piece.type !== pawn && !pushed) {
+    // Pawns can't drop tiles
+    if (endTile.dropState === stable && piece.type !== pawn) {
       endTile.dropState = shaking;
     }
 
