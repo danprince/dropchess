@@ -81,7 +81,7 @@ body {
 }
 
 .tile[data-type="dropped"] {
-  animation: forwards drop-tile 200ms;
+  animation: forwards drop-tile 400ms;
 }
 
 .tile[data-selected="true"] {
