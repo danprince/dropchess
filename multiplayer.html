@@ -42,37 +42,50 @@
       </template>
     </div>
     <div class="info">
-      <div x-cloak style="height: 200px">
-        <p x-show="winner">
-          🎉 <strong x-text="winner"></strong> wins. Press <kbd>n</kbd> to start
-          a new game.
-        </p>
-        <template x-for="name in players">
-          <span
-            class="username"
-            :data-you="name === username"
-            :data-active-user="name === activeUser"
+      <p x-cloak x-show="winner">
+        🎉 <strong x-text="winner"></strong> wins. Press <kbd>n</kbd> to start a
+        new game.
+      </p>
+      <template x-for="name in players">
+        <span
+          class="username"
+          :data-you="name === username"
+          :data-active-user="name === activeUser"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16.7262 6.14015C16.7262 8.73597 14.6102 10.8403 12 10.8403C9.38982 10.8403 7.27385 8.73597 7.27385 6.14015C7.27385 3.54433 9.38982 1.44 12 1.44C14.6102 1.44 16.7262 3.54433 16.7262 6.14015Z"
-                fill="currentColor"
-              />
-              <path
-                d="M19.68 18.478C19.68 24.3186 16.2416 22.8844 12 22.8844C7.75846 22.8844 4.32001 24.3186 4.32001 18.478C4.32001 12.6374 7.75846 9.66526 12 9.66526C16.2416 9.66526 19.68 12.6374 19.68 18.478Z"
-                fill="currentColor"
-              />
-            </svg>
+            <path
+              d="M16.7262 6.14015C16.7262 8.73597 14.6102 10.8403 12 10.8403C9.38982 10.8403 7.27385 8.73597 7.27385 6.14015C7.27385 3.54433 9.38982 1.44 12 1.44C14.6102 1.44 16.7262 3.54433 16.7262 6.14015Z"
+              fill="currentColor"
+            />
+            <path
+              d="M19.68 18.478C19.68 24.3186 16.2416 22.8844 12 22.8844C7.75846 22.8844 4.32001 24.3186 4.32001 18.478C4.32001 12.6374 7.75846 9.66526 12 9.66526C16.2416 9.66526 19.68 12.6374 19.68 18.478Z"
+              fill="currentColor"
+            />
+          </svg>
 
-            <span x-text="name"></span>
-          </span>
-        </template>
-      </div>
+          <span x-text="name"></span>
+        </span>
+      </template>
+
+      <p>
+        When a <em>non-pawn</em> piece moves, the tile they land on will shake.
+        If a piece moves off of a shaking tile, then the tile will drop out of
+        the board entirely, leaving a hole.
+      </p>
+      <p>
+        Anything that would be a legal capture in chess will push the piece
+        backwards instead (so long as there is space). If a piece is pushed down
+        a hole or off of the board, it is removed from the game.
+      </p>
+      <p>
+        There's no check, no castling, and no en passant. You win by pushing the
+        opponent's king off of the board.
+      </p>
     </div>
   </body>
   <script type="module" src="multiplayer.js" defer></script>
