@@ -9,6 +9,7 @@
   </head>
 
   <body x-data="new App()" @keydown.escape="selectPiece()">
+    <h1>Dropchess</h1>
     <div class="board">
       <template x-for="square in getSquares()">
         <div
@@ -35,7 +36,6 @@
       </template>
     </div>
     <div class="info">
-      <h1>Dropchess</h1>
       <p>Knock the opponent's king off the board.</p>
       <p>
         When a <em>non-pawn</em> piece lands on a tile, that tile begins to

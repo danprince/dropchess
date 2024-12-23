@@ -14,6 +14,7 @@
     @keydown.n="newGame()"
     @beforeunload.window="disconnect()"
   >
+    <h1>Dropchess Multiplayer</h1>
     <div class="board">
       <template x-for="square in getSquares()">
         <div
@@ -41,34 +42,34 @@
       </template>
     </div>
     <div class="info">
-      <h1>Dropchess Multiplayer</h1>
       <div x-cloak style="height: 200px">
         <p x-show="winner">
-          🎉 <strong x-text="winner"></strong> wins. Press <kbd>n</kbd> to start a new game.
+          🎉 <strong x-text="winner"></strong> wins. Press <kbd>n</kbd> to start
+          a new game.
         </p>
-        <template x-for="username in players">
+        <template x-for="name in players">
           <span
-            style="display: flex; align-items: center"
-            :data-active-user="username === activeUser"
+            class="username"
+            :data-you="name === username"
+            :data-active-user="name === activeUser"
           >
             <svg
               width="16"
               height="16"
               viewBox="0 0 24 24"
-              fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M16.7262 6.14015C16.7262 8.73597 14.6102 10.8403 12 10.8403C9.38982 10.8403 7.27385 8.73597 7.27385 6.14015C7.27385 3.54433 9.38982 1.44 12 1.44C14.6102 1.44 16.7262 3.54433 16.7262 6.14015Z"
-                fill="#888888"
+                fill="currentColor"
               />
               <path
                 d="M19.68 18.478C19.68 24.3186 16.2416 22.8844 12 22.8844C7.75846 22.8844 4.32001 24.3186 4.32001 18.478C4.32001 12.6374 7.75846 9.66526 12 9.66526C16.2416 9.66526 19.68 12.6374 19.68 18.478Z"
-                fill="#888888"
+                fill="currentColor"
               />
             </svg>
 
-            <span x-text="username"></span>
+            <span x-text="name"></span>
           </span>
         </template>
       </div>

@@ -175,3 +175,13 @@ h1 {
   color: royalblue;
   font-weight: bold;
 }
+
+.username {
+  margin-right: 1em;
+  display: inline-flex;
+  align-items: center;
+}
+
+[data-you="true"] svg {
+  color: royalblue;
+}
