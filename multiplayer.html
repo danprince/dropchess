@@ -43,6 +43,9 @@
     <div class="info">
       <h1>Dropchess Multiplayer</h1>
       <div style="height: 200px">
+        <p x-show="winner">
+          🎉 <strong x-text="winner"></strong> wins. Press <kbd>n</kbd> to start a new game.
+        </p>
         <template x-for="username in players">
           <span
             style="display: flex; align-items: center"

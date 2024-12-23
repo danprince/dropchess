@@ -1,6 +1,6 @@
 // @ts-ignore
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { black, Game, white } from "./chess.js";
+import { black, Game, king, white } from "./chess.js";
 
 import {
   getFirestore,
@@ -86,6 +86,27 @@ class MultiplayerApp {
   constructor() {
     let username = localStorage.username || prompt("Pick a username") || "anon";
     this.username = localStorage.username = username;
+  }
+
+  /**
+   * @returns {Color | undefined}
+   */
+  get winner() {
+    let whiteKing = this.game.pieces.find(
+      (piece) => piece.type === king && piece.color === white,
+    );
+
+    let blackKing = this.game.pieces.find(
+      (piece) => piece.type === king && piece.color === black,
+    );
+
+    if (whiteKing?.active === false) {
+      return black;
+    }
+
+    if (blackKing?.active === false) {
+      return white;
+    }
   }
 
   /**
