@@ -6,6 +6,12 @@
     "checkJs": true,
     "noEmit": true,
     "lib": ["DOM", "ESNext"],
-    "target": "ESNext"
+    "target": "ESNext",
+    "baseUrl": ".",
+    "paths": {
+      "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js": [
+        "./node_modules/@firebase/firestore/dist/index.js"
+      ]
+    }
   }
 }

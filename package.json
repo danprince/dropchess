@@ -3,5 +3,8 @@
   "private": true,
   "scripts": {
     "test": "node tests.js"
+  },
+  "dependencies": {
+    "@firebase/firestore": "^4.7.5"
   }
 }
