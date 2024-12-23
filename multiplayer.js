@@ -22,6 +22,7 @@ import {
  * @prop {Piece[]} pieces
  * @prop {Tile[]} tiles
  * @prop {string[]} players
+ * @prop {Color} turn
  * @prop {number | null} selectedPieceId
  * @prop {string | null} activeUser
  *
@@ -72,7 +73,7 @@ class MultiplayerApp {
   game = new Game();
 
   /**
-   * The piece that is currently selected.
+   * The id of the piece that is currently selected.
    * @type {number | null}
    */
   selectedPieceId = null;
@@ -114,7 +115,14 @@ class MultiplayerApp {
    * @param {Piece | undefined} piece
    */
   selectPiece(piece) {
-    this.selectedPieceId = piece?.id ?? null;
+    // Clicks on empty tiles and clicks on pieces of the wrong color will reset
+    // the selected piece.
+    if (!piece || piece.color !== this.game.turn) {
+      this.selectedPieceId = null;
+      return;
+    }
+
+    this.selectedPieceId = piece.id;
 
     updateDoc(roomDoc, {
       selectedPieceId: this.selectedPieceId,
@@ -133,11 +141,20 @@ class MultiplayerApp {
   play(move) {
     let piece = this.getSelectedPiece();
 
-    if (piece) {
-      this.game.play(piece, move);
-      this.selectPiece(undefined);
-      this.sync();
+    if (!piece) {
+      return;
     }
+
+    this.game.play(piece, move);
+    this.selectPiece(undefined);
+
+    updateDoc(roomDoc, {
+      tiles: this.game.tiles,
+      pieces: this.game.pieces,
+      turn: this.game.turn,
+      selectedPieceId: null,
+      activeUser: null,
+    });
   }
 
   /**
@@ -169,6 +186,7 @@ class MultiplayerApp {
       players: this.players,
       pieces: this.game.pieces,
       tiles: this.game.tiles,
+      turn: this.game.turn,
       selectedPieceId: null,
       activeUser: null,
     });
@@ -186,6 +204,7 @@ class MultiplayerApp {
         this.players = data.players;
         this.game.tiles = data.tiles;
         this.game.pieces = data.pieces;
+        this.game.turn = data.turn;
         this.selectedPieceId = data.selectedPieceId;
         this.activeUser = data.activeUser;
       } else {
@@ -202,15 +221,6 @@ class MultiplayerApp {
   disconnect() {
     updateDoc(roomDoc, {
       players: arrayRemove(this.username),
-    });
-  }
-
-  async sync() {
-    updateDoc(roomDoc, {
-      tiles: this.game.tiles,
-      pieces: this.game.pieces,
-      selectedPieceId: null,
-      activeUser: null,
     });
   }
 }
