@@ -166,3 +166,8 @@ h1 {
   text-align: center;
   font-size: 16pt;
 }
+
+[data-active-user="true"] {
+  color: royalblue;
+  font-weight: bold;
+}

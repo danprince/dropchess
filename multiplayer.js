@@ -4,11 +4,11 @@ import { black, Game, white } from "./chess.js";
 
 import {
   getFirestore,
-  getDoc,
   updateDoc,
   onSnapshot,
-  setDoc,
   doc,
+  arrayUnion,
+  arrayRemove,
 } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
 /**
@@ -20,7 +20,9 @@ import {
  * @typedef {object} Room
  * @prop {Piece[]} pieces
  * @prop {Tile[]} tiles
+ * @prop {string[]} players
  * @prop {number | null} selectedPieceId
+ * @prop {string | null} activeUser
  *
  * @typedef {number[]} GameState
  *
@@ -50,6 +52,22 @@ const roomDoc = /** @type {DocumentReference<Room, Room>} */ (
 );
 
 class MultiplayerApp {
+  /**
+   * Whether we're still waiting for the game data.
+   */
+  loading = true;
+
+  /**
+   * The username of the current player
+   * @type {string | undefined}
+   */
+  username;
+
+  /**
+   * @type {string[]}
+   */
+  players = [];
+
   game = new Game();
 
   /**
@@ -57,6 +75,12 @@ class MultiplayerApp {
    * @type {number | null}
    */
   selectedPieceId = null;
+
+  /**
+   * The name of the user who is currently selecting a piece.
+   * @type {string | null}
+   */
+  activeUser = null;
 
   /**
    * Select a piece.
@@ -67,6 +91,7 @@ class MultiplayerApp {
 
     updateDoc(roomDoc, {
       selectedPieceId: this.selectedPieceId,
+      activeUser: this.username,
     });
   }
 
@@ -112,28 +137,57 @@ class MultiplayerApp {
 
   async newGame() {
     this.game = new Game();
-    await setDoc(roomDoc, {
+
+    await updateDoc(roomDoc, {
       pieces: this.game.pieces,
       tiles: this.game.tiles,
       selectedPieceId: null,
+      activeUser: null,
     });
   }
 
   async init() {
-    let roomSnapshot = await getDoc(roomDoc);
-
-    // If the room doesn't exist yet, then create it.
-    if (!roomSnapshot.exists()) {
-      this.newGame();
-    }
-
+    // Listen for changes to the room doc
     onSnapshot(roomDoc, (snapshot) => {
       let data = snapshot.data();
+
       if (data) {
+        this.loading = false;
+        this.players = data.players;
         this.game.tiles = data.tiles;
         this.game.pieces = data.pieces;
         this.selectedPieceId = data.selectedPieceId;
+        this.activeUser = data.activeUser;
+        this.registerUsername();
+      } else {
+        this.newGame();
       }
+    });
+  }
+
+  async registerUsername() {
+    // Bail if we already have a username
+    if (this.username) return;
+
+    let username = localStorage.username || prompt("Pick a username") || "anon";
+
+    while (this.players.includes(username)) {
+      let name = prompt(
+        `There's already a "${username}" here. Pick another name:`,
+      );
+      username = name || username;
+    }
+
+    this.username = localStorage.username = username;
+
+    await updateDoc(roomDoc, {
+      players: arrayUnion(this.username),
+    });
+  }
+
+  disconnect() {
+    updateDoc(roomDoc, {
+      players: arrayRemove(this.username),
     });
   }
 
@@ -142,6 +196,7 @@ class MultiplayerApp {
       tiles: this.game.tiles,
       pieces: this.game.pieces,
       selectedPieceId: null,
+      activeUser: null,
     });
   }
 }

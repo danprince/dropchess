@@ -8,7 +8,12 @@
     <title>Dropchess (Multiplayer)</title>
   </head>
 
-  <body x-data="new MultiplayerApp()" @keydown.escape="selectPiece()" @keydown.n="newGame()">
+  <body
+    x-data="new MultiplayerApp()"
+    @keydown.escape="selectPiece()"
+    @keydown.n="newGame()"
+    @beforeunload.window="disconnect()"
+  >
     <div class="board">
       <template x-for="square in getSquares()">
         <div
@@ -26,6 +31,7 @@
       <template x-for="piece of game.pieces" :key="piece.id">
         <div
           class="piece"
+          x-show="!loading"
           :data-color="piece.color"
           :data-type="piece.type"
           :data-active="piece.active"
@@ -36,6 +42,33 @@
     </div>
     <div class="info">
       <h1>Dropchess Multiplayer</h1>
+      <div style="height: 200px">
+        <template x-for="username in players">
+          <span
+            style="display: flex; align-items: center"
+            :data-active-user="username === activeUser"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16.7262 6.14015C16.7262 8.73597 14.6102 10.8403 12 10.8403C9.38982 10.8403 7.27385 8.73597 7.27385 6.14015C7.27385 3.54433 9.38982 1.44 12 1.44C14.6102 1.44 16.7262 3.54433 16.7262 6.14015Z"
+                fill="#888888"
+              />
+              <path
+                d="M19.68 18.478C19.68 24.3186 16.2416 22.8844 12 22.8844C7.75846 22.8844 4.32001 24.3186 4.32001 18.478C4.32001 12.6374 7.75846 9.66526 12 9.66526C16.2416 9.66526 19.68 12.6374 19.68 18.478Z"
+                fill="#888888"
+              />
+            </svg>
+
+            <span x-text="username"></span>
+          </span>
+        </template>
+      </div>
     </div>
   </body>
   <script type="module" src="multiplayer.js" defer></script>
