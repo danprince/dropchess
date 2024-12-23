@@ -1,5 +1,5 @@
 :root {
-  --tile-size: 64px;
+  --tile-size: min(64px, calc(100vw / 8));
 }
 
 @keyframes shaking {
