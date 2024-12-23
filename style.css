@@ -72,11 +72,11 @@ body {
   background-color: #444;
 }
 
-[data-drop-state="shaking"] {
+.tile[data-type="shaking"] {
   animation: 300ms infinite shaking;
 }
 
-[data-drop-state="dropped"] {
+.tile[data-type="dropped"] {
   animation: forwards drop-tile 200ms;
 }
 

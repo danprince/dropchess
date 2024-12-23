@@ -14,7 +14,7 @@ import {
 } from "./chess.js";
 
 /**
- * @import { Color, Point, Piece, PieceType, Tile, DropState, Move } from "./chess.js";
+ * @import { Color, Point, Piece, PieceType, Tile, TileType, Move } from "./chess.js";
  */
 
 /**
@@ -89,7 +89,7 @@ const blackPieceToCharTable = {
  * @returns {string}
  */
 function renderSquare({ tile, piece, move }) {
-  if (tile.dropState === dropped) {
+  if (tile.type === dropped) {
     return " ";
   }
 
@@ -99,7 +99,7 @@ function renderSquare({ tile, piece, move }) {
 
   let modifiers = "";
 
-  if (tile.dropState === "shaking") {
+  if (tile.type === "shaking") {
     modifiers += "\u0330";
   }
 
@@ -169,11 +169,11 @@ export class Scenario {
         }
 
         /**
-         * @type {DropState}
+         * @type {TileType}
          */
-        let dropState = char === " " ? dropped : isShaking ? shaking : stable;
+        let type = char === " " ? dropped : isShaking ? shaking : stable;
 
-        tiles.push({ x, y, dropState });
+        tiles.push({ x, y, type: type });
 
         // If there's a tile character here, there's no piece and we can skip
         // to the next tile.

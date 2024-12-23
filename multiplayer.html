@@ -24,7 +24,7 @@
           :data-color="square.color"
           :data-selected="square.selected"
           :data-move="square.move?.type"
-          :data-drop-state="square.tile.dropState"
+          :data-type="square.tile.type"
           :data-piece="square.piece?.type"
           @click="square.move ? play(square.move) : selectPiece(square.piece)"
         ></div>

@@ -17,12 +17,12 @@
  *
  * @typedef {typeof move | typeof push} MoveType
  *
- * @typedef {typeof stable | typeof shaking | typeof dropped} DropState
+ * @typedef {typeof stable | typeof shaking | typeof dropped} TileType
  *
  * @typedef {object} Tile
  * @prop {number} x
  * @prop {number} y
- * @prop {DropState} dropState
+ * @prop {TileType} type
  *
  * @typedef {object} Move
  * @prop {MoveType} type
@@ -159,7 +159,7 @@ export class Game {
     let tile = this.getTile(point);
     let piece = this.getPiece(point);
     return (
-      tile === undefined || tile.dropState === dropped || piece !== undefined
+      tile === undefined || tile.type === dropped || piece !== undefined
     );
   }
 
@@ -187,21 +187,21 @@ export class Game {
 
     // If the tile is shaking, then drop it, unless the piece was pushed off
     // the tile.
-    if (startTile.dropState === shaking && !pushed) {
-      startTile.dropState = dropped;
+    if (startTile.type === shaking && !pushed) {
+      startTile.type = dropped;
     }
 
     piece.x = point.x;
     piece.y = point.y;
 
-    if (endTile === undefined || endTile.dropState === dropped) {
+    if (endTile === undefined || endTile.type === dropped) {
       this.removePiece(piece);
       return;
     }
 
     // Pawns can't drop tiles
-    if (endTile.dropState === stable && piece.type !== pawn) {
-      endTile.dropState = shaking;
+    if (endTile.type === stable && piece.type !== pawn) {
+      endTile.type = shaking;
     }
 
     // Black pawn promotion
@@ -330,7 +330,7 @@ function createTiles() {
 
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < columns; x++) {
-      tiles.push({ x, y, dropState: stable });
+      tiles.push({ x, y, type: stable });
     }
   }
 
@@ -462,7 +462,7 @@ function getLogicalMove(game, piece, point) {
   let tile = game.getTile(point);
 
   // If the tile is empty or has been dropped then we can't move there.
-  if (tile === undefined || tile.dropState === "dropped") {
+  if (tile === undefined || tile.type === "dropped") {
     return undefined;
   }
 
