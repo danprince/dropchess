@@ -47,6 +47,16 @@ class App {
       this.game.play(this.selectedPiece, move);
       this.selectPiece(undefined);
     }
+
+    // Wait for animations to finish before checking for the winner
+    setTimeout(() => this.checkWin(), 400);
+  }
+
+  checkWin() {
+    if (this.game.winner) {
+      alert(`${this.game.winner} wins!`);
+      this.init();
+    }
   }
 
   /**
@@ -60,9 +70,7 @@ class App {
     return this.game.tiles.map((tile) => {
       let piece = this.game.getPiece(tile);
 
-      let move = moves.find(
-        (move) => move.x === tile.x && move.y === tile.y,
-      );
+      let move = moves.find((move) => move.x === tile.x && move.y === tile.y);
 
       let selected =
         tile.x === this.selectedPiece?.x && tile.y === this.selectedPiece.y;
