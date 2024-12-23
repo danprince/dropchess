@@ -7,6 +7,7 @@ import {
   updateDoc,
   onSnapshot,
   doc,
+  setDoc,
   arrayUnion,
   arrayRemove,
 } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
@@ -138,7 +139,8 @@ class MultiplayerApp {
   async newGame() {
     this.game = new Game();
 
-    await updateDoc(roomDoc, {
+    await setDoc(roomDoc, {
+      players: this.players,
       pieces: this.game.pieces,
       tiles: this.game.tiles,
       selectedPieceId: null,
