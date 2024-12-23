@@ -4,7 +4,8 @@
   "scripts": {
     "test": "node tests.js"
   },
-  "dependencies": {
-    "@firebase/firestore": "^4.7.5"
+  "devDependencies": {
+    "@firebase/firestore": "^4.7.5",
+    "typescript": "^5.7.2"
   }
 }
