@@ -83,7 +83,15 @@ export class Game {
    */
   pieces;
 
-  constructor({ tiles = createStartingTiles(), pieces = createStartingPieces() } = {}) {
+  /**
+   * @type {Color}
+   */
+  turn = white;
+
+  constructor({
+    tiles = createStartingTiles(),
+    pieces = createStartingPieces(),
+  } = {}) {
     this.tiles = tiles;
     this.pieces = pieces;
   }
@@ -158,6 +166,8 @@ export class Game {
       this.pushPieceAtPoint(piece, move);
       this.movePieceToPoint(piece, move);
     }
+
+    this.turn = this.turn === white ? black : white;
   }
 
   /**
